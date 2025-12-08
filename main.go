@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	_ "gin-my-blogs/blogs/base"
+	"gin-my-blogs/blog/interfaces/router"
 	"gin-my-blogs/blogs/interfaces"
 
 	"github.com/gin-gonic/gin"
@@ -13,9 +13,10 @@ func main() {
 	interfaces.Test1()
 	// base.CreateTable()
 	r := gin.Default()
+	router.RegisterRoutes(r)
 	//创建分组
-	gp := r.Group("/blogs")
-	interfaces.Test1RegisterRoutes(gp)
+	// gp := r.Group("/blogs")
+	// interfaces.Test1RegisterRoutes(gp)
 
 	err := r.Run(":8000")
 	if err != nil {
