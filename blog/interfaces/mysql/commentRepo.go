@@ -63,7 +63,7 @@ func (c *Comment) Delete(db *gorm.DB, id uint) error {
 }
 
 func (c *Comment) Updates(db *gorm.DB) error {
-	result := db.Model(&User{}).Where("id=?", c.ID).Update("content", c.Content)
+	result := db.Model(&Comment{}).Where("id=?", c.ID).Update("content", c.Content)
 	if result.Error != nil {
 		return result.Error
 	}
