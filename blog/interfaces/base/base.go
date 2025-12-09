@@ -1,9 +1,9 @@
 package base
 
 import (
-	"gin-my-blogs/blogs/entity"
+	mysqls "gin-my-blogs/blog/interfaces/mysql"
 
-	"gorm.io/driver/mysql"
+	mysql "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -25,7 +25,7 @@ func InitDb() *gorm.DB {
  */
 func CreateTable() {
 	db := InitDb()
-	db.AutoMigrate(&entity.User{})
-	db.AutoMigrate(&entity.Post{})
-	db.AutoMigrate(&entity.Comment{})
+	db.AutoMigrate(&mysqls.User{})
+	db.AutoMigrate(&mysqls.Post{})
+	db.AutoMigrate(&mysqls.Comment{})
 }

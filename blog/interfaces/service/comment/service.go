@@ -1,8 +1,7 @@
-package user
+package comment
 
 import (
 	"context"
-
 	"gin-my-blogs/blog/interfaces/mysql"
 
 	"gorm.io/gorm"
@@ -11,11 +10,11 @@ import (
 type Service interface {
 	Create(ctx context.Context, req *CreateRequest) (id uint, err error)
 
-	DetailById(ctx context.Context, id uint) (user *mysql.User, err error)
+	DetailById(ctx context.Context, id uint) (user *mysql.Comment, err error)
 
-	List(ctx context.Context, req *ListRequest) (user *[]mysql.User, err error)
+	List(ctx context.Context, req *ListRequest) (user *[]mysql.Comment, err error)
 
-	UpdatePassword(ctx context.Context, req *UpdatesRequest) (err error)
+	Updates(ctx context.Context, req *UpdatesRequest) (err error)
 
 	Delete(ctx context.Context, id uint) (err error)
 }

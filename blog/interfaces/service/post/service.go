@@ -1,4 +1,4 @@
-package user
+package post
 
 import (
 	"context"
@@ -11,11 +11,11 @@ import (
 type Service interface {
 	Create(ctx context.Context, req *CreateRequest) (id uint, err error)
 
-	DetailById(ctx context.Context, id uint) (user *mysql.User, err error)
+	DetailById(ctx context.Context, id uint) (user *mysql.Post, err error)
 
-	List(ctx context.Context, req *ListRequest) (user *[]mysql.User, err error)
+	List(ctx context.Context, req *ListRequest) (user *[]mysql.Post, err error)
 
-	UpdatePassword(ctx context.Context, req *UpdatesRequest) (err error)
+	Updates(ctx context.Context, req *UpdatesRequest) (err error)
 
 	Delete(ctx context.Context, id uint) (err error)
 }

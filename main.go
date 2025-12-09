@@ -3,17 +3,17 @@ package main
 import (
 	"fmt"
 	"gin-my-blogs/blog/interfaces/router"
-	"gin-my-blogs/blogs/interfaces"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	fmt.Println("---开始---")
-	interfaces.Test1()
+	// interfaces.Test1()
 	// base.CreateTable()
 	r := gin.Default()
 	router.RegisterRoutes(r)
+	router.Test1RegisterRoutes(r)
 	//创建分组
 	// gp := r.Group("/blogs")
 	// interfaces.Test1RegisterRoutes(gp)

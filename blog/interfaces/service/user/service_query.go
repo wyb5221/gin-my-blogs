@@ -5,7 +5,7 @@ import (
 	"gin-my-blogs/blog/interfaces/mysql"
 )
 
-type CreateRequest struct {
+type ListRequest struct {
 	UserName string `json:"userName"`
 	UserNo   string `json:"userNo"`
 	Addr     string `json:"addr"`
@@ -13,19 +13,25 @@ type CreateRequest struct {
 	Email    string `json:"email"`
 }
 
-func (s *service) Create(ctx context.Context, req *CreateRequest) (id uint, err error) {
+func (s *service) DetailById(ctx context.Context, id uint) (user *mysql.User, err error) {
+	u := &mysql.User{}
+	i, err := u.DetailById(s.db, id)
+	if err != nil {
+		return nil, err
+	}
+	return i, err
+}
+
+func (s *service) List(ctx context.Context, req *ListRequest) (users *[]mysql.User, err error) {
 	user := mysql.User{}
 	user.UserName = req.UserName
 	user.UserNo = req.UserNo
 	user.Addr = req.Addr
-	user.Email = req.Email
 	user.Password = req.Password
-	t := uint(1)
-	user.Level = &t
 
-	id, err = user.Create(s.db)
+	us, err := user.List(s.db)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	return
+	return us, err
 }
