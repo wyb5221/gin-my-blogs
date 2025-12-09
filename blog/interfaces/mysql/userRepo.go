@@ -17,6 +17,13 @@ type User struct {
 	Posts    []Post
 }
 
+func (u *User) AutoTable(db *gorm.DB) {
+	res := db.AutoMigrate(&User{})
+	if res != nil {
+		fmt.Println("", res.Error())
+	}
+}
+
 func (u *User) Create(db *gorm.DB) (id uint, err error) {
 	var user User
 	result := db.Where("user_no = ?", u.UserNo).First(&user)
@@ -55,6 +62,10 @@ func (u *User) List(db *gorm.DB) (user *[]User, err error) {
 	}
 	if u.Addr != "" {
 		query.Where("addr like ?", "%"+u.Addr+"%")
+	}
+	level := u.Level
+	if *level != 0 {
+		query.Where("level = ?", level)
 	}
 	return &users, query.Find(&users).Error
 }

@@ -13,6 +13,11 @@ type CreateRequest struct {
 	Email    string `json:"email"`
 }
 
+func (s *service) AutoTable(ctx context.Context) {
+	user := mysql.User{}
+	user.AutoTable(s.db)
+}
+
 func (s *service) Create(ctx context.Context, req *CreateRequest) (id uint, err error) {
 	user := mysql.User{}
 	user.UserName = req.UserName

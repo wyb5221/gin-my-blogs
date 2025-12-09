@@ -1,6 +1,7 @@
 package router
 
 import (
+	"gin-my-blogs/blog/interfaces/api/comment"
 	"gin-my-blogs/blog/interfaces/api/post"
 	"gin-my-blogs/blog/interfaces/api/user"
 	"gin-my-blogs/blog/interfaces/base"
@@ -14,8 +15,16 @@ func RegisterRoutes(r *gin.Engine) {
 	db := base.InitDb()
 	var logger *zap.Logger
 	userHandler := user.New(logger, db)
-
 	postHandler := post.New(logger, db)
+	commentHandler := comment.New(logger, db)
+
+	//创建分组
+	g := r.Group("/blogs")
+	{
+		g.GET("/user/autoTable", userHandler.AutoTable())
+		g.GET("/post/autoTable", postHandler.AutoTable())
+		g.GET("/comment/autoTable", commentHandler.AutoTable())
+	}
 	//创建分组
 	gp := r.Group("/blogs")
 	{
@@ -30,6 +39,12 @@ func RegisterRoutes(r *gin.Engine) {
 		gp.GET("/post/detail/:id", postHandler.Detail())
 		gp.POST("/post/list", postHandler.List())
 		gp.POST("/post/updates", postHandler.Updates())
+
+		gp.POST("/comment/add", commentHandler.Create())
+		gp.GET("/comment/detail/:id", commentHandler.Detail())
+		gp.GET("/comment/delete/:id", commentHandler.Delete())
+		gp.POST("/comment/list", commentHandler.List())
+		gp.POST("/comment/updates", commentHandler.Updates())
 
 	}
 

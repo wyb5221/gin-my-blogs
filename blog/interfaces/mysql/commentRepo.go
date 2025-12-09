@@ -1,12 +1,24 @@
 package mysql
 
-import "gorm.io/gorm"
+import (
+	"fmt"
+
+	"gorm.io/gorm"
+)
 
 type Comment struct {
 	gorm.Model
 	Content string
+	Status  *uint
 	UserId  *uint
 	PostId  *uint
+}
+
+func (c *Comment) AutoTable(db *gorm.DB) {
+	res := db.AutoMigrate(&Comment{})
+	if res != nil {
+		fmt.Println("", res.Error())
+	}
 }
 
 func (c *Comment) Create(db *gorm.DB) (id uint, err error) {
@@ -31,10 +43,14 @@ func (c *Comment) List(db *gorm.DB) (comments *[]Comment, err error) {
 	if c.Content != "" {
 		query.Where("content like ?", "%"+c.Content+"%")
 	}
-
-	// if cp.UserId != nil {
-	// 	query.Where("user_id = ?", p.UserId)
-	// }
+	userId := c.UserId
+	if *userId != 0 {
+		query.Where("user_id = ?", userId)
+	}
+	postId := c.PostId
+	if *postId != 0 {
+		query.Where("post_id = ?", postId)
+	}
 	return &cs, query.Find(&cs).Error
 }
 

@@ -9,6 +9,8 @@ import (
 )
 
 type Handler interface {
+	// AutoTable 建表
+	AutoTable() func(ctx *gin.Context)
 	// Create 新增
 	Create() func(ctx *gin.Context)
 	// Detail 个人信息

@@ -8,6 +8,8 @@ import (
 )
 
 type Service interface {
+	AutoTable(ctx context.Context)
+
 	Create(ctx context.Context, req *CreateRequest) (id uint, err error)
 
 	DetailById(ctx context.Context, id uint) (user *mysql.Comment, err error)

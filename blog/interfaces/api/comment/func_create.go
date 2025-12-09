@@ -7,6 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (h *handler) AutoTable() func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		h.commentService.AutoTable(ctx)
+		ctx.JSON(http.StatusOK, gin.H{"mes": "SUCCESS"})
+	}
+}
+
 func (h *handler) Create() func(ctx *gin.Context) {
 	req := &comment.CreateRequest{}
 

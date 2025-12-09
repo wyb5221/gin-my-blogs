@@ -1,6 +1,8 @@
 package mysql
 
 import (
+	"fmt"
+
 	"gorm.io/gorm"
 )
 
@@ -10,8 +12,16 @@ type Post struct {
 	Content   string
 	Type      string
 	WorkCount *uint64
+	Status    *uint
 	UserId    *uint
 	Comments  []Comment
+}
+
+func (p *Post) AutoTable(db *gorm.DB) {
+	res := db.AutoMigrate(&Post{})
+	if res != nil {
+		fmt.Println("", res.Error())
+	}
 }
 
 func (p *Post) Create(db *gorm.DB) (id uint, err error) {
@@ -42,12 +52,14 @@ func (p *Post) List(db *gorm.DB) (posts *[]Post, err error) {
 	if p.Type != "" {
 		query.Where("type = ?", p.Type)
 	}
-	// if p.WorkCount != nil {
-	// 	query.Where("work_count >= ?", p.WorkCount)
-	// }
-	// if p.UserId != nil {
-	// 	query.Where("user_id = ?", p.UserId)
-	// }
+	workCount := p.WorkCount
+	if *workCount != 0 {
+		query.Where("work_count >= ?", workCount)
+	}
+	userId := p.UserId
+	if *userId != 0 {
+		query.Where("user_id = ?", userId)
+	}
 	return &ps, query.Find(&ps).Error
 }
 

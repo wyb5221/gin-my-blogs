@@ -11,6 +11,7 @@ type ListRequest struct {
 	Addr     string `json:"addr"`
 	Password string `json:"password"`
 	Email    string `json:"email"`
+	Level    uint   `json:"level"`
 }
 
 func (s *service) DetailById(ctx context.Context, id uint) (user *mysql.User, err error) {
@@ -27,6 +28,7 @@ func (s *service) List(ctx context.Context, req *ListRequest) (users *[]mysql.Us
 	user.UserName = req.UserName
 	user.UserNo = req.UserNo
 	user.Addr = req.Addr
+	user.Level = &req.Level
 	user.Password = req.Password
 
 	us, err := user.List(s.db)
