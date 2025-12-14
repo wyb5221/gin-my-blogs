@@ -5,6 +5,7 @@ import (
 	"gin-my-blogs/blog/interfaces/api/post"
 	"gin-my-blogs/blog/interfaces/api/user"
 	"gin-my-blogs/blog/interfaces/base"
+	"gin-my-blogs/blog/middleware"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -24,9 +25,13 @@ func RegisterRoutes(r *gin.Engine) {
 		g.GET("/user/autoTable", userHandler.AutoTable())
 		g.GET("/post/autoTable", postHandler.AutoTable())
 		g.GET("/comment/autoTable", commentHandler.AutoTable())
+		//登陆
+		g.POST("/user/login", userHandler.Login())
 	}
 	//创建分组
 	gp := r.Group("/blogs")
+	// 应用JWT认证中间件
+	gp.Use(middleware.AuthMiddleware())
 	{
 		gp.POST("/user/add", userHandler.Create())
 		gp.GET("/user/delete/:id", userHandler.Delete())

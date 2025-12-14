@@ -13,6 +13,8 @@ type Handler interface {
 	AutoTable() func(ctx *gin.Context)
 	// Create 新增
 	Create() func(ctx *gin.Context)
+	// Create 新增
+	Login() func(ctx *gin.Context)
 	// Detail 个人信息
 	Detail() func(ctx *gin.Context)
 	// List 用户列表

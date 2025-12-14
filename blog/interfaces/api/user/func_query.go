@@ -8,6 +8,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func (h *handler) Login() func(ctx *gin.Context) {
+	return func(ctx *gin.Context) {
+		req := &user.ListRequest{}
+		err1 := ctx.ShouldBind(req)
+		if err1 != nil {
+			return
+		}
+		token, _ := h.userService.Login(ctx, req)
+
+		ctx.JSON(http.StatusOK, token)
+	}
+}
+
 func (h *handler) Detail() func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		idStr := ctx.Param("id")

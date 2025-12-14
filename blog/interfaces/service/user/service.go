@@ -5,13 +5,16 @@ import (
 
 	"gin-my-blogs/blog/interfaces/mysql"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type Service interface {
 	AutoTable(ctx context.Context)
 
-	Create(ctx context.Context, req *CreateRequest) (id uint, err error)
+	Create(ctx gin.Context, req *CreateRequest) (id uint, err error)
+
+	Login(ctx context.Context, req *ListRequest) (token string, err error)
 
 	DetailById(ctx context.Context, id uint) (user *mysql.User, err error)
 

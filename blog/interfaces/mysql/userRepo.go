@@ -14,6 +14,8 @@ type User struct {
 	Password string
 	Email    string
 	Level    *uint
+	CreateBy *uint
+	BlogNum  *uint
 	Posts    []Post
 }
 
@@ -42,6 +44,15 @@ func (u *User) Create(db *gorm.DB) (id uint, err error) {
 func (u *User) DetailById(db *gorm.DB, id uint) (user *User, err error) {
 	var ur = &User{}
 	result := db.First(ur, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return ur, nil
+}
+
+func (u *User) QueryByUserNoAndPwd(db *gorm.DB) (user *User, err error) {
+	var ur = &User{}
+	result := db.Where("user_no = ? AND password = ? ", u.UserNo, u.Password).First(ur)
 	if result.Error != nil {
 		return nil, result.Error
 	}

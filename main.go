@@ -9,6 +9,9 @@ import (
 
 func main() {
 	fmt.Println("---开始---")
+
+	// service.Test1()
+
 	// interfaces.Test1()
 	// base.CreateTable()
 	r := gin.Default()
