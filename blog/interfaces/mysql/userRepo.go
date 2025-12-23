@@ -52,7 +52,7 @@ func (u *User) DetailById(db *gorm.DB, id uint) (user *User, err error) {
 
 func (u *User) QueryByUserNoAndPwd(db *gorm.DB) (user *User, err error) {
 	var ur = &User{}
-	result := db.Where("user_no = ? AND password = ? ", u.UserNo, u.Password).First(ur)
+	result := db.Where("user_no = ?  ", u.UserNo).First(ur)
 	if result.Error != nil {
 		return nil, result.Error
 	}

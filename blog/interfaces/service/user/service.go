@@ -14,15 +14,15 @@ type Service interface {
 
 	Create(ctx gin.Context, req *CreateRequest) (id uint, err error)
 
-	Login(ctx context.Context, req *ListRequest) (token string, err error)
+	Login(ctx gin.Context, req *ListRequest) (token string, err error)
 
-	DetailById(ctx context.Context, id uint) (user *mysql.User, err error)
+	DetailById(ctx gin.Context, id uint) (user *mysql.User, err error)
 
-	List(ctx context.Context, req *ListRequest) (user *[]mysql.User, err error)
+	List(ctx gin.Context, req *ListRequest) (user *[]mysql.User, err error)
 
-	UpdatePassword(ctx context.Context, req *UpdatesRequest) (err error)
+	UpdatePassword(ctx gin.Context, req *UpdatesRequest) (err error)
 
-	Delete(ctx context.Context, id uint) (err error)
+	Delete(ctx gin.Context, id uint) (err error)
 }
 type service struct {
 	db *gorm.DB

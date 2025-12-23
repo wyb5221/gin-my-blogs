@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"gin-my-blogs/blog/common/jwt"
 	"gin-my-blogs/blog/interfaces/mysql"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type CreateRequest struct {
@@ -28,7 +30,14 @@ func (s *service) Create(ctx gin.Context, req *CreateRequest) (id uint, err erro
 	user.UserNo = req.UserNo
 	user.Addr = req.Addr
 	user.Email = req.Email
-	user.Password = req.Password
+	// 加密密码
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
+		return
+	}
+	user.Password = string(hashedPassword)
+
 	// 或者获取完整的claims
 	if claims, exists := ctx.Get("claims"); exists {
 		jwtClaims := claims.(*jwt.MyClaims)

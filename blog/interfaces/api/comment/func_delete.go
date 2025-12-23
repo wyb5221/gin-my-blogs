@@ -17,10 +17,11 @@ func (h *handler) Delete() func(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID参数格式错误"})
 			return
 		}
-		err = h.commentService.Delete(ctx, uint(id))
+		err = h.commentService.Delete(*ctx, uint(id))
 		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		ctx.JSON(http.StatusOK, err)
+		ctx.JSON(http.StatusOK, gin.H{"message": "删除成功"})
 	}
 }

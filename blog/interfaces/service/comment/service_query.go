@@ -1,8 +1,9 @@
 package comment
 
 import (
-	"context"
 	"gin-my-blogs/blog/interfaces/mysql"
+
+	"github.com/gin-gonic/gin"
 )
 
 type ListRequest struct {
@@ -11,7 +12,7 @@ type ListRequest struct {
 	UserId  uint   `json:"userId"`
 }
 
-func (s *service) DetailById(ctx context.Context, id uint) (comment *mysql.Comment, err error) {
+func (s *service) DetailById(ctx gin.Context, id uint) (comment *mysql.Comment, err error) {
 	c := &mysql.Comment{}
 	i, err := c.DetailById(s.db, id)
 	if err != nil {
@@ -20,7 +21,7 @@ func (s *service) DetailById(ctx context.Context, id uint) (comment *mysql.Comme
 	return i, err
 }
 
-func (s *service) List(ctx context.Context, req *ListRequest) (comments *[]mysql.Comment, err error) {
+func (s *service) List(ctx gin.Context, req *ListRequest) (comments *[]mysql.Comment, err error) {
 	c := mysql.Comment{}
 	c.Content = req.Content
 	c.PostId = &req.PostId

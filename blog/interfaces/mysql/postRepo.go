@@ -100,3 +100,12 @@ func (p *Post) Updates(db *gorm.DB) error {
 	}
 	return nil
 }
+
+func (p *Post) GetPostCommentsById(db *gorm.DB, id uint) (post *Post, err error) {
+	var pt = &Post{}
+	result := db.Preload("Comments").First(pt, id)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return pt, nil
+}

@@ -13,14 +13,16 @@ type Handler interface {
 	AutoTable() func(ctx *gin.Context)
 	// Create 新增
 	Create() func(ctx *gin.Context)
-	// Detail 文章信息
+	// Detail 评论信息
 	Detail() func(ctx *gin.Context)
-	// List 文章列表
+	// List 评论列表
 	List() func(ctx *gin.Context)
-	// Delete 删除文章
+	// Delete 删除评论
 	Delete() func(ctx *gin.Context)
-	// Updates 修改文章
+	// Updates 修改评论
 	Updates() func(ctx *gin.Context)
+	// UpdateStatus 修改评论状态
+	UpdateStatus() func(ctx *gin.Context)
 }
 
 type handler struct {

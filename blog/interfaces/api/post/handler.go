@@ -21,6 +21,8 @@ type Handler interface {
 	Delete() func(ctx *gin.Context)
 	// Updates 修改文章
 	Updates() func(ctx *gin.Context)
+	// GetPostCommentsById 查询文章的评论信息
+	GetPostCommentsById() func(ctx *gin.Context)
 }
 
 type handler struct {

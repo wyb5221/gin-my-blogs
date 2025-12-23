@@ -69,3 +69,20 @@ func (c *Comment) Updates(db *gorm.DB) error {
 	}
 	return nil
 }
+
+func (c *Comment) GetCommentByPostId(db *gorm.DB) (comments *Comment, err error) {
+	var cs = &Comment{}
+	result := db.Where("id=? and post_id=?", c.ID, c.PostId).First(cs)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return cs, nil
+}
+
+func (c *Comment) UpdateStatus(db *gorm.DB) error {
+	result := db.Model(&Comment{}).Where("id=?", c.ID).Update("status", c.Status)
+	if result.Error != nil {
+		return result.Error
+	}
+	return nil
+}

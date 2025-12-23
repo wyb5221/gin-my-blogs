@@ -17,8 +17,9 @@ func (h *handler) Detail() func(ctx *gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"error": "ID参数格式错误"})
 			return
 		}
-		user, err := h.commentService.DetailById(ctx, uint(id))
+		user, err := h.commentService.DetailById(*ctx, uint(id))
 		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		ctx.JSON(http.StatusOK, user)
@@ -34,8 +35,9 @@ func (h *handler) List() func(ctx *gin.Context) {
 			return
 		}
 
-		users, err := h.commentService.List(ctx, req)
+		users, err := h.commentService.List(*ctx, req)
 		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
 		}
 		ctx.JSON(http.StatusOK, users)

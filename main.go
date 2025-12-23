@@ -10,6 +10,9 @@ import (
 func main() {
 	fmt.Println("---开始---")
 
+	// 加密密码
+	// hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("123456"), bcrypt.DefaultCost)
+	// fmt.Println("--hashedPassword:", string(hashedPassword))
 	// service.Test1()
 
 	// interfaces.Test1()

@@ -4,21 +4,24 @@ import (
 	"context"
 	"gin-my-blogs/blog/interfaces/mysql"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 type Service interface {
 	AutoTable(ctx context.Context)
 
-	Create(ctx context.Context, req *CreateRequest) (id uint, err error)
+	Create(ctx gin.Context, req *CreateRequest) (id uint, err error)
 
-	DetailById(ctx context.Context, id uint) (user *mysql.Comment, err error)
+	DetailById(ctx gin.Context, id uint) (user *mysql.Comment, err error)
 
-	List(ctx context.Context, req *ListRequest) (user *[]mysql.Comment, err error)
+	List(ctx gin.Context, req *ListRequest) (user *[]mysql.Comment, err error)
 
-	Updates(ctx context.Context, req *UpdatesRequest) (err error)
+	Updates(ctx gin.Context, req *UpdatesRequest) (err error)
 
-	Delete(ctx context.Context, id uint) (err error)
+	Delete(ctx gin.Context, id uint) (err error)
+
+	UpdateStatus(ctx gin.Context, req *UpdatesRequest) (err error)
 }
 type service struct {
 	db *gorm.DB

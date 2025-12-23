@@ -1,10 +1,12 @@
 package user
 
 import (
-	"context"
 	"errors"
 	"gin-my-blogs/blog/common/jwt"
 	"gin-my-blogs/blog/interfaces/mysql"
+
+	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 	// "github.com/golang-jwt/jwt/v4"
 )
 
@@ -17,10 +19,10 @@ type ListRequest struct {
 	Level    uint   `json:"level"`
 }
 
-func (s *service) Login(ctx context.Context, req *ListRequest) (str string, err error) {
+func (s *service) Login(ctx gin.Context, req *ListRequest) (str string, err error) {
 	user := mysql.User{}
 	user.UserNo = req.UserNo
-	user.Password = req.Password
+	// user.Password = req.Password
 
 	ue, err := user.QueryByUserNoAndPwd(s.db)
 	if err != nil {
@@ -29,6 +31,10 @@ func (s *service) Login(ctx context.Context, req *ListRequest) (str string, err 
 	// 检查返回的对象是否为 nil
 	if ue == nil {
 		return "用户账户或密码错误！", errors.New("用户不存在")
+	}
+	// 验证密码
+	if err := bcrypt.CompareHashAndPassword([]byte(ue.Password), []byte(req.Password)); err != nil {
+		return "用户账户或密码错误！", err
 	}
 
 	token, err := jwt.GenerateToken(ue.ID, ue.UserNo, ue.UserName)
@@ -55,7 +61,7 @@ func (s *service) Login(ctx context.Context, req *ListRequest) (str string, err 
 
 }
 
-func (s *service) DetailById(ctx context.Context, id uint) (user *mysql.User, err error) {
+func (s *service) DetailById(ctx gin.Context, id uint) (user *mysql.User, err error) {
 	u := &mysql.User{}
 	i, err := u.DetailById(s.db, id)
 	if err != nil {
@@ -64,7 +70,7 @@ func (s *service) DetailById(ctx context.Context, id uint) (user *mysql.User, er
 	return i, err
 }
 
-func (s *service) List(ctx context.Context, req *ListRequest) (users *[]mysql.User, err error) {
+func (s *service) List(ctx gin.Context, req *ListRequest) (users *[]mysql.User, err error) {
 	user := mysql.User{}
 	user.UserName = req.UserName
 	user.UserNo = req.UserNo

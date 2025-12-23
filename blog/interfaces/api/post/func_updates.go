@@ -1,7 +1,6 @@
 package post
 
 import (
-	"fmt"
 	"gin-my-blogs/blog/interfaces/service/post"
 	"net/http"
 
@@ -10,14 +9,17 @@ import (
 
 func (h *handler) Updates() func(ctx *gin.Context) {
 	req := &post.UpdatesRequest{}
-	fmt.Println("---1---")
 	return func(ctx *gin.Context) {
 		err1 := ctx.ShouldBind(req)
 		if err1 != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": err1.Error()})
 			return
 		}
-		err2 := h.postService.Updates(ctx, req)
-
-		ctx.JSON(http.StatusOK, err2)
+		err2 := h.postService.Updates(*ctx, req)
+		if err2 != nil {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err2.Error()})
+			return
+		}
+		ctx.JSON(http.StatusOK, gin.H{"message": "更新成功"})
 	}
 }

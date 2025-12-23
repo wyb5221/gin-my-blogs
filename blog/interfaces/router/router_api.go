@@ -44,12 +44,14 @@ func RegisterRoutes(r *gin.Engine) {
 		gp.GET("/post/detail/:id", postHandler.Detail())
 		gp.POST("/post/list", postHandler.List())
 		gp.POST("/post/updates", postHandler.Updates())
+		gp.GET("/post/GetPostCommentsById/:id", postHandler.GetPostCommentsById())
 
 		gp.POST("/comment/add", commentHandler.Create())
 		gp.GET("/comment/detail/:id", commentHandler.Detail())
 		gp.GET("/comment/delete/:id", commentHandler.Delete())
 		gp.POST("/comment/list", commentHandler.List())
 		gp.POST("/comment/updates", commentHandler.Updates())
+		gp.POST("/comment/UpdateStatus", commentHandler.UpdateStatus())
 
 	}
 

@@ -22,9 +22,9 @@ func (h *handler) Create() func(ctx *gin.Context) {
 		if err1 != nil {
 			return
 		}
-		id, err2 := h.commentService.Create(ctx, req)
+		id, err2 := h.commentService.Create(*ctx, req)
 		if err2 != nil {
-			ctx.JSON(http.StatusOK, err2)
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err2.Error()})
 			return
 		}
 		ctx.JSON(http.StatusOK, gin.H{"id": id})
